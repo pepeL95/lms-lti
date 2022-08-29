@@ -117,7 +117,7 @@ router.get('/info', async (req, res) => {
   return res.send(info)
 })
 
-router.get('/keys', (req, res) => {
+router.get('/jwk-generator', (req, res) => {
   const jwk = {
     "kty": "RSA",
     "e": "AQAB",
@@ -127,10 +127,6 @@ router.get('/keys', (req, res) => {
     "n": "ku4nAh29Jx_bCR-WLZ35RuRwJm-fZrm8ENutuM0Ihf_gYvo1LNCBcpdEOjtFh9JL1j9Gl_9zz0q3nubq_ha8ivvsQDp4pgNx0u96fa-KF-485BwjcO58tCiux6KF-WprrG6AIhN88AMOvqGmPzfepkMfbkQbN7EilmtmRSsL2SJsL5CU0ZP4rXGL1-McCWEaJ4VPJ-vZSWZxVxQBDjNDLLSNFS5X9sYDxqo6KQlkhUmRFq5OxuD19DPJY_l5Gg-rvmKvzDuMR6q0gRMd-OR_CyhlRtBj7uagYcX0y-DUnhCTSlD9MgTwTJlpy6Nkj39GR5hHO6NeQJqwdKQcH9oYoQ"
   }
   res.send(jwk.json())
-})
-
-router.get('/login', (req, res) => {
-  res.send("Route Not Set Up Yet...")
 })
 
 // Wildcard route to deal with redirecting to routes that are actually React routes
