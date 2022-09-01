@@ -38,14 +38,14 @@ const setup = async () => {
   /**
    * Register platform
    */
-  /* await lti.registerPlatform({
+  await lti.registerPlatform({
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
-    clientId: 'TOOLCLIENTID',
+    clientId: '10000000000001',
     authenticationEndpoint: 'https://canvas.instructure.com/api/lti/authorize_redirect',
     accesstokenEndpoint: 'https://canvas.instructure.com/login/oauth2/token',
     authConfig: { method: 'JWK_SET', key: 'https://canvas.instructure.com/api/lti/security/jwks' }
-}) */
+})
 }
 
 setup()
