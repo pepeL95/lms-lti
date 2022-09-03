@@ -130,6 +130,6 @@ router.get('/jwk-generator', (req, res) => {
 })
 
 // Wildcard route to deal with redirecting to routes that are actually React routes
-router.get('/idx', (req, res) => res.sendFile(path.join('../public/index.html')))
+router.get('/', (req, res) => res.sendFile(path.join('../public/index.html')))
 
 module.exports = router
