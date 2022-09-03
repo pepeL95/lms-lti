@@ -10,7 +10,7 @@ lti.setup(process.env.LTI_KEY,
     url: 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME + '?authSource=admin',
     //connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
   }, {
-    staticPath: path.join(__dirname, './public'), // Path to static files
+    staticPath: path.join(__dirname, '/public'), // Path to static files
     cookies: {
       secure: false, // Set secure to true if the testing platform is in a different domain and https is being used
       sameSite: '' // Set sameSite to 'None' if the testing platform is in a different domain and https is being used
@@ -20,6 +20,7 @@ lti.setup(process.env.LTI_KEY,
 
 // When receiving successful LTI launch redirects to app
 lti.onConnect(async (token, req, res) => {
+  console.log('token: ', token)
   return res.sendFile(path.join(__dirname, './public/index.html'))
 })
 
@@ -42,10 +43,10 @@ const setup = async () => {
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
     clientId: '10000000000001',
-    authenticationEndpoint: 'https://canvas.instructure.com/api/lti/authorize_redirect',
-    accesstokenEndpoint: 'https://canvas.instructure.com/login/oauth2/token',
-    authConfig: { method: 'JWK_SET', key: 'https://canvas.instructure.com/api/lti/security/jwks' }
-})
+    authenticationEndpoint: 'http://192.168.1.174/api/lti/authorize_redirect',
+    accesstokenEndpoint: 'http://192.168.1.174/login/oauth2/token',
+    authConfig: { method: 'JWK_SET', key: 'http://192.168.1.174/api/lti/security/jwks' }
+  })
 }
 
 setup()
