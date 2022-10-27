@@ -3,12 +3,14 @@ const path = require('path')
 const routes = require('./src/routes')
 
 const lti = require('ltijs').Provider
-console.log(process.env.LTI_KEY)
+// console.log(lti.token)
+// console.log(process.env.LTI_KEY)
 // Setup
 lti.setup(process.env.LTI_KEY,
   {
-    url: 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME + '?authSource=admin',
-    //connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
+    //url: 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME + '?authSource=admin',
+    url: process.env.DB_URL,
+    connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
   }, {
     staticPath: path.join(__dirname, '/public'), // Path to static files
     cookies: {
