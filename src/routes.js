@@ -11,6 +11,7 @@ router.post('/grade', async (req, res) => {
     const idtoken = res.locals.token // IdToken
     const score = req.body.grade // User numeric score sent in the body
     const token = req.body.token
+    const total = req.body.total
     console.log(req.body.grade)
     console.log(req.body.label)
     console.log(token)
@@ -21,7 +22,7 @@ router.post('/grade', async (req, res) => {
       activityProgress: 'Completed',
       timestamp: `${new Date()}`,
       gradingProgress: 'FullyGraded',
-      scoreGiven: score / 20,
+      scoreGiven: score / total,
       scoreMaximum: 1,
     }
     // Selecting linetItem ID
