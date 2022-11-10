@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const path = require('path')
+const axios = require('axios')
 
 // Requiring Ltijs
 const lti = require('ltijs').Provider
@@ -9,40 +10,64 @@ router.post('/grade', async (req, res) => {
   try {
     const idtoken = res.locals.token // IdToken
     const score = req.body.grade // User numeric score sent in the body
+    const token = req.body.token
+    console.log(req.body.grade)
+    console.log(req.body.label)
+    console.log(token)
+
     // Creating Grade object
     const gradeObj = {
       userId: idtoken.user,
-      scoreGiven: score,
-      scoreMaximum: 100,
       activityProgress: 'Completed',
-      gradingProgress: 'FullyGraded'
+      timestamp: `${new Date()}`,
+      gradingProgress: 'FullyGraded',
+      scoreGiven: score / 20,
+      scoreMaximum: 1,
     }
-
     // Selecting linetItem ID
     let lineItemId = idtoken.platformContext.endpoint.lineitem // Attempting to retrieve it from idtoken
     if (!lineItemId) {
-      const response = await lti.Grade.getLineItems(idtoken, { resourceLinkId: true })
+      console.log('No line item id...')
+      const response = await lti.Grade.getLineItems(idtoken, {
+        resourceLinkId: true,
+      })
       const lineItems = response.lineItems
       if (lineItems.length === 0) {
         // Creating line item if there is none
         console.log('Creating new line item')
         const newLineItem = {
-          scoreMaximum: 100,
+          scoreMaximum: 20,
           label: req.body.label,
           tag: 'grade',
-          resourceLinkId: idtoken.platformContext.resource.id
+          resourceLinkId: idtoken.platformContext.resource.id,
         }
         const lineItem = await lti.Grade.createLineItem(idtoken, newLineItem)
         lineItemId = lineItem.id
       } else lineItemId = lineItems[0].id
     }
 
+    console.log('\nline item id: ', lineItemId, '\ngrade object: ', gradeObj)
+    console.log(idtoken.platformContext.endpoint.scope)
     // Sending Grade
-    const responseGrade = await lti.Grade.submitScore(idtoken, lineItemId, gradeObj)
-    return res.send(responseGrade)
-  } catch (err) {
-    console.log(err.message)
-    return res.status(500).send({ err: err.message })
+    const responseGrade = await lti.Grade.submitScore(
+      idtoken,
+      lineItemId,
+      gradeObj
+    )
+    res.end()
+    // const POSTOptions = {
+    //         method: 'POST',
+    //         headers: {'Authentication': `Bearer ${token}`, 'Content-Type': 'application/vnd.ims.lis.v1.score+json'},
+    //         data: gradeObj,
+    //         url: lineItemId + '/scores'
+    //     }
+    //     axios(POSTOptions)
+    //     .then(res.send('Done'))
+    //     .catch(e => console.log('Error in POST: ' + e))
+    // return res.send(responseGrade)
+  } catch (e) {
+    console.log('ERROR IN LTIJS: ', e.message)
+    return res.status(500).send({ error: e.message })
   }
 })
 
@@ -62,17 +87,20 @@ router.get('/members', async (req, res) => {
 router.post('/deeplink', async (req, res) => {
   try {
     const resource = req.body
-
     const items = {
       type: 'ltiResourceLink',
       title: 'Ltijs Demo',
       custom: {
         name: resource.name,
-        value: resource.value
-      }
+        value: resource.value,
+      },
     }
 
-    const form = await lti.DeepLinking.createDeepLinkingForm(res.locals.token, items, { message: 'Successfully Registered' })
+    const form = await lti.DeepLinking.createDeepLinkingForm(
+      res.locals.token,
+      items,
+      { message: 'Successfully Registered' }
+    )
     if (form) return res.send(form)
     return res.sendStatus(500)
   } catch (err) {
@@ -86,16 +114,16 @@ router.get('/resources', async (req, res) => {
   const resources = [
     {
       name: 'Resource1',
-      value: 'value1'
+      value: 'value1',
     },
     {
       name: 'Resource2',
-      value: 'value2'
+      value: 'value2',
     },
     {
       name: 'Resource3',
-      value: 'value3'
-    }
+      value: 'value3',
+    },
   ]
   return res.send(resources)
 })
@@ -105,7 +133,7 @@ router.get('/info', async (req, res) => {
   const token = res.locals.token
   const context = res.locals.context
 
-  const info = { }
+  const info = {}
   if (token.userInfo) {
     if (token.userInfo.name) info.name = token.userInfo.name
     if (token.userInfo.email) info.email = token.userInfo.email
@@ -119,17 +147,17 @@ router.get('/info', async (req, res) => {
 
 router.get('/jwk-generator', (req, res) => {
   const jwk = {
-    "kty": "RSA",
-    "e": "AQAB",
-    "use": "sig",
-    "kid": "AB3EQiNYNBDokiqvnCPDKtSfNgE=",
-    "alg": "RS256",
-    "n": "ku4nAh29Jx_bCR-WLZ35RuRwJm-fZrm8ENutuM0Ihf_gYvo1LNCBcpdEOjtFh9JL1j9Gl_9zz0q3nubq_ha8ivvsQDp4pgNx0u96fa-KF-485BwjcO58tCiux6KF-WprrG6AIhN88AMOvqGmPzfepkMfbkQbN7EilmtmRSsL2SJsL5CU0ZP4rXGL1-McCWEaJ4VPJ-vZSWZxVxQBDjNDLLSNFS5X9sYDxqo6KQlkhUmRFq5OxuD19DPJY_l5Gg-rvmKvzDuMR6q0gRMd-OR_CyhlRtBj7uagYcX0y-DUnhCTSlD9MgTwTJlpy6Nkj39GR5hHO6NeQJqwdKQcH9oYoQ"
+    kty: 'RSA',
+    e: 'AQAB',
+    use: 'sig',
+    kid: 'AB3EQiNYNBDokiqvnCPDKtSfNgE=',
+    alg: 'RS256',
+    n: 'ku4nAh29Jx_bCR-WLZ35RuRwJm-fZrm8ENutuM0Ihf_gYvo1LNCBcpdEOjtFh9JL1j9Gl_9zz0q3nubq_ha8ivvsQDp4pgNx0u96fa-KF-485BwjcO58tCiux6KF-WprrG6AIhN88AMOvqGmPzfepkMfbkQbN7EilmtmRSsL2SJsL5CU0ZP4rXGL1-McCWEaJ4VPJ-vZSWZxVxQBDjNDLLSNFS5X9sYDxqo6KQlkhUmRFq5OxuD19DPJY_l5Gg-rvmKvzDuMR6q0gRMd-OR_CyhlRtBj7uagYcX0y-DUnhCTSlD9MgTwTJlpy6Nkj39GR5hHO6NeQJqwdKQcH9oYoQ',
   }
   res.send(jwk.json())
 })
 
 // Wildcard route to deal with redirecting to routes that are actually React routes
-router.get('/', (req, res) => res.send("Hello"))
+router.get('/', (req, res) => res.sendFile('../public/index.js'))
 
 module.exports = router
