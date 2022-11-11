@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Test LTI</title>
+  </head>
+
+  <body>
+    <button onclick="sendGrades()">Send Grade (18)</button>
+  </body>
+
+  <script>
+    const getLtik = () => {
+      const searchParams = new URLSearchParams(window.location.search)
+      const ltik = searchParams.get('ltik')
+      //   console.log('THIS IS THE KEY>>>: ', ltik)
+      if (!ltik) throw new Error('Missing lti key.')
+      return ltik
+    }
+
+    const sendGrades = async () => {
+      const ltik = getLtik()
+      //   alert('clicked')
+      const data = { score: 18, label: 1, token: ltik }
+      const url = '/grade'
+      const options = {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${ltik}`,
+          'Credentials': 'include',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data), // body data type must match "Content-Type" header
+      }
+      console.log(ltik)
+
+      const response = await fetch(url, options)
+
+      const returnedData = await response.text()
+
+      console.log(returnedData)
+
+      return returnedData
+    }
+  </script>
+</html>

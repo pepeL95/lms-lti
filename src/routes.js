@@ -9,10 +9,10 @@ const lti = require('ltijs').Provider
 router.post('/grade', async (req, res) => {
   try {
     const idtoken = res.locals.token // IdToken
-    const score = req.body.grade // User numeric score sent in the body
+    const score = req.body.score // User numeric score sent in the body
     const token = req.body.token
-    const total = req.body.total
-    console.log(req.body.grade)
+    const total = 100
+    console.log(req.body.score)
     console.log(req.body.label)
     console.log(token)
 
@@ -56,16 +56,6 @@ router.post('/grade', async (req, res) => {
       gradeObj
     )
     res.end()
-    // const POSTOptions = {
-    //         method: 'POST',
-    //         headers: {'Authentication': `Bearer ${token}`, 'Content-Type': 'application/vnd.ims.lis.v1.score+json'},
-    //         data: gradeObj,
-    //         url: lineItemId + '/scores'
-    //     }
-    //     axios(POSTOptions)
-    //     .then(res.send('Done'))
-    //     .catch(e => console.log('Error in POST: ' + e))
-    // return res.send(responseGrade)
   } catch (e) {
     console.log('ERROR IN LTIJS: ', e.message)
     return res.status(500).send({ error: e.message })

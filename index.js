@@ -8,16 +8,16 @@ const lti = require('ltijs').Provider
 // Setup
 lti.setup(process.env.LTI_KEY,
   {
-    //url: 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME + '?authSource=admin',
+    // url: 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME + '?authSource=admin',
     url: process.env.DB_URL,
     connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
   }, {
     staticPath: path.join(__dirname, '/public'), // Path to static files
     cookies: {
       secure: false, // Set secure to true if the testing platform is in a different domain and https is being used
-      sameSite: '' // Set sameSite to 'None' if the testing platform is in a different domain and https is being used
+      sameSite: ''   // Set sameSite to 'None' if the testing platform is in a different domain and https is being used
     },
-    devMode: false // Set DevMode to true if the testing platform is in a different domain and https is not being used
+    devMode: true   // Set DevMode to true if the testing platform is in a different domain and https is not being used
   })
 
 // When receiving successful LTI launch redirects to app
@@ -38,13 +38,12 @@ lti.app.use(routes)
 const setup = async () => {
   await lti.deploy({ port: process.env.PORT || 3000 })
 
-  /**
-   * Register platform
-   */
+  // Register platform
   await lti.registerPlatform({
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
-    clientId: '219300000000000004',
+    // clientId: '219300000000000004',
+    clientId: '219300000000000005',
     authenticationEndpoint: 'https://digitomy.instructure.com/api/lti/authorize_redirect',
     accesstokenEndpoint: 'https://digitomy.instructure.com/login/oauth2/token',
     authConfig: { method: 'JWK_SET', key: 'https://digitomy.instructure.com/api/lti/security/jwks' }
