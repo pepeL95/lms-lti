@@ -9,11 +9,8 @@ const lti = require('ltijs').Provider
 router.post('/grade', async (req, res) => {
   try {
     const idtoken = res.locals.token // IdToken
-    const score = req.body.grade // User numeric score sent in the body
+    const score = req.body.score // User numeric score sent in the body
     const token = req.body.token
-    console.log(req.body.grade)
-    console.log(req.body.label)
-    console.log(token)
 
     // Creating Grade object
     const gradeObj = {
@@ -21,7 +18,7 @@ router.post('/grade', async (req, res) => {
       activityProgress: 'Completed',
       timestamp: `${new Date()}`,
       gradingProgress: 'FullyGraded',
-      scoreGiven: score / 20,
+      scoreGiven: score / 100,
       scoreMaximum: 1,
     }
     // Selecting linetItem ID
@@ -36,7 +33,7 @@ router.post('/grade', async (req, res) => {
         // Creating line item if there is none
         console.log('Creating new line item')
         const newLineItem = {
-          scoreMaximum: 20,
+          scoreMaximum: 100,
           label: req.body.label,
           tag: 'grade',
           resourceLinkId: idtoken.platformContext.resource.id,
@@ -45,7 +42,6 @@ router.post('/grade', async (req, res) => {
         lineItemId = lineItem.id
       } else lineItemId = lineItems[0].id
     }
-
     console.log('\nline item id: ', lineItemId, '\ngrade object: ', gradeObj)
     console.log(idtoken.platformContext.endpoint.scope)
     // Sending Grade
@@ -55,16 +51,6 @@ router.post('/grade', async (req, res) => {
       gradeObj
     )
     res.end()
-    // const POSTOptions = {
-    //         method: 'POST',
-    //         headers: {'Authentication': `Bearer ${token}`, 'Content-Type': 'application/vnd.ims.lis.v1.score+json'},
-    //         data: gradeObj,
-    //         url: lineItemId + '/scores'
-    //     }
-    //     axios(POSTOptions)
-    //     .then(res.send('Done'))
-    //     .catch(e => console.log('Error in POST: ' + e))
-    // return res.send(responseGrade)
   } catch (e) {
     console.log('ERROR IN LTIJS: ', e.message)
     return res.status(500).send({ error: e.message })
