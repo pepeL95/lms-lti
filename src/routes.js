@@ -129,7 +129,7 @@ router.get('/info', async (req, res) => {
     if (token.userInfo.name) info.name = token.userInfo.name
     if (token.userInfo.email) info.email = token.userInfo.email
   }
-
+  
   if (context.roles) info.roles = context.roles
   if (context.context) info.context = context.context
 
