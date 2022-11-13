@@ -1,6 +1,4 @@
 const router = require('express').Router()
-const path = require('path')
-const axios = require('axios')
 
 // Requiring Ltijs
 const lti = require('ltijs').Provider

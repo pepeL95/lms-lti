@@ -3,8 +3,7 @@ const path = require('path')
 const routes = require('./src/routes')
 
 const lti = require('ltijs').Provider
-// console.log(lti.token)
-// console.log(process.env.LTI_KEY)
+
 // Setup
 lti.setup(process.env.LTI_KEY,
   {
@@ -34,20 +33,19 @@ lti.onDeepLinking(async (token, req, res) => {
 
 // Setting up routes
 lti.app.use(routes)
+
+// Setting up view engine (EJS)
 lti.app.set('view engine', 'ejs')
 lti.app.set('views', path.join(__dirname, './dynamic_views'))
 
 // Setup function
 const setup = async () => {
   await lti.deploy({ port: process.env.PORT || 3000 })
-
-  /**
-   * Register platform
-   */
+// Register Platform
   await lti.registerPlatform({
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
-    clientId: '219300000000000004',
+    clientId: '219300000000000005',
     authenticationEndpoint: 'https://digitomy.instructure.com/api/lti/authorize_redirect',
     accesstokenEndpoint: 'https://digitomy.instructure.com/login/oauth2/token',
     authConfig: { method: 'JWK_SET', key: 'https://digitomy.instructure.com/api/lti/security/jwks' }
