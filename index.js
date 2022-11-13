@@ -23,7 +23,8 @@ lti.setup(process.env.LTI_KEY,
 // When receiving successful LTI launch redirects to app
 lti.onConnect(async (token, req, res) => {
   console.log('token: ', token)
-  return res.sendFile(path.join(__dirname, './public/index.html'))
+  return res.render('index', {student_name: token.userInfo.name}) 
+  // return res.sendFile(path.join(__dirname, './public/index.html'))
 })
 
 // When receiving deep linking request redirects to deep screen
@@ -33,6 +34,8 @@ lti.onDeepLinking(async (token, req, res) => {
 
 // Setting up routes
 lti.app.use(routes)
+lti.app.set('view engine', 'ejs')
+lti.app.set('views', path.join(__dirname, './dynamic_views'))
 
 // Setup function
 const setup = async () => {
