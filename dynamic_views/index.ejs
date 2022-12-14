@@ -7,7 +7,7 @@
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
     <canvas id="unity-canvas" width=100vw height=100vh style="width: 100vw; height: 100vh; background: #231F20"></canvas>
-    <script src="Build/New folder.loader.js"></script>
+    <script src="Build/public.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -26,9 +26,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/New folder.data",
-        frameworkUrl: "Build/New folder.framework.js",
-        codeUrl: "Build/New folder.wasm",
+        dataUrl: "Build/b55cf60b0ab41cb996630a3de4d59467.data",
+        frameworkUrl: "Build/2c40039191f7291660af9e90d0c01569.js",
+        codeUrl: "Build/ad25fb1824d8fca385ab319772538fbd.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Testing",
