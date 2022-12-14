@@ -1,0 +1,21 @@
+clone repo:
+	git clone URL
+
+// to install node js on ubuntu
+nodejs:
+	sudo apt update
+ 	sudo apt install nodejs
+ 	sudo apt-get install npm
+
+// to create ssh session
+mobaxtern:
+	SSH:
+		Session
+		enter Ip address, enter username: "ubuntu"
+	Advanced SSH Settings:
+		Attach Key
+
+// had to use noip to create a dns since aws ec2 changed ip address on every reboot
+Noip:
+	joselopezgarrido@usf.edu
+	-GG_A8QTP4R/pys
