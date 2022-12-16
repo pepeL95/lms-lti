@@ -1,0 +1,70 @@
+clone repo:
+	git clone URL
+
+# to install node js on ubuntu
+nodejs:
+	sudo apt update
+ 	sudo apt install nodejs
+ 	sudo apt-get install npm
+
+# to create ssh session
+mobaxtern:
+	SSH:
+		Session
+		enter Ip address, enter username: "ubuntu"
+	Advanced SSH Settings:
+		Attach Key
+
+# had to use noip to create a dns since aws ec2 changed ip address on every reboot
+Noip for UBUNTU:
+	username: joselopezgarrido@usf.edu
+	password: -GG_A8QTP4R/pys
+	# gain root acces
+	sudo -s
+	
+	# download and install noip client
+	cd /usr/local/src
+	wget hhtp://www.noip.com/client/linux/noip-duc-linux.tar.gz
+	tar xf noip-duc-linux.tar.gz
+	cd noip-2.1.9-1
+	make install
+
+	# configure the client
+	/usr/local/bin/noip2 -C
+
+	# launch noip client in the background
+	/usr/local/bin/noip2
+
+	# to automatically run client noip on vm startup, copy the script below in either of these
+	/etc/init.d/rcX.d
+	  or
+	/sbin/init.d/rcX.d
+	
+	# where the 'X' in rcX.d is the value obtained by running the following command:
+	        grep initdefault /etc/inittab | awk -F: '{print $2}'
+
+	# Killproc can be downloaded from ftp://ftp.suse.com/pub/projects/init
+	# Alternatively, you can uncomment the line after #! /bin/sh
+
+
+	#######################################################
+        #! /bin/sh
+        . /etc/rc.d/init.d/functions  # uncomment/modify for your killproc
+        case "$1" in
+            start)
+                echo "Starting noip2."
+                /usr/local/bin/noip2
+            ;;
+            stop)
+                echo -n "Shutting down noip2."
+                killproc -TERM /usr/local/bin/noip2
+            ;;
+            *)
+                echo "Usage: $0 {start|stop}"
+                exit 1
+        esac
+        exit 0
+    #######################################################
+
+chmod 700 /usr/local/bin/noip2
+chown root:root /usr/local/bin/noip2
