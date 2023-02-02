@@ -46,9 +46,9 @@ const setup = async () => {
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
     clientId: '130000000000931',
-    authenticationEndpoint: 'canvas.instructure.com/api/lti/authorize_redirect',
-    accesstokenEndpoint: 'canvas.instructure.com/login/oauth2/token',
-    authConfig: { method: 'JWK_SET', key: 'canvas.instructure.com/api/lti/security/jwks' }
+    authenticationEndpoint: 'https://canvas.instructure.com/api/lti/authorize_redirect',
+    accesstokenEndpoint: 'https://canvas.instructure.com/login/oauth2/token',
+    authConfig: { method: 'JWK_SET', key: 'https://canvas.instructure.com/api/lti/security/jwks' }
   })
 }
 
