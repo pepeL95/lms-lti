@@ -45,10 +45,10 @@ const setup = async () => {
   await lti.registerPlatform({
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
-    clientId: '219300000000000005',
-    authenticationEndpoint: 'https://digitomy.instructure.com/api/lti/authorize_redirect',
-    accesstokenEndpoint: 'https://digitomy.instructure.com/login/oauth2/token',
-    authConfig: { method: 'JWK_SET', key: 'https://digitomy.instructure.com/api/lti/security/jwks' }
+    clientId: '130000000000931',
+    authenticationEndpoint: 'https://canvas.instructure.com/api/lti/authorize_redirect',
+    accesstokenEndpoint: 'https://canvas.instructure.com/login/oauth2/token',
+    authConfig: { method: 'JWK_SET', key: 'https://canvas.instructure.com/api/lti/security/jwks' }
   })
 }
 
