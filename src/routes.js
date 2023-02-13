@@ -31,7 +31,7 @@ router.post('/grade', async (req, res) => {
         // Creating line item if there is none
         console.log('Creating new line item')
         const newLineItem = {
-          scoreMaximum: 100,
+          scoreMaximum: 20,
           label: req.body.label,
           tag: 'grade',
           resourceLinkId: idtoken.platformContext.resource.id,
