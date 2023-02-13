@@ -3,8 +3,7 @@ const path = require('path')
 const routes = require('./src/routes')
 
 const lti = require('ltijs').Provider
-// console.log(lti.token)
-// console.log(process.env.LTI_KEY)
+
 // Setup
 lti.setup(process.env.LTI_KEY,
   {
@@ -23,7 +22,8 @@ lti.setup(process.env.LTI_KEY,
 // When receiving successful LTI launch redirects to app
 lti.onConnect(async (token, req, res) => {
   console.log('token: ', token)
-  return res.sendFile(path.join(__dirname, './public/index.html'))
+  return res.render('index', {student_name: token.userInfo.name}) 
+  // return res.sendFile(path.join(__dirname, './public/index.html'))
 })
 
 // When receiving deep linking request redirects to deep screen
@@ -34,9 +34,14 @@ lti.onDeepLinking(async (token, req, res) => {
 // Setting up routes
 lti.app.use(routes)
 
+// Setting up view engine (EJS)
+lti.app.set('view engine', 'ejs')
+lti.app.set('views', path.join(__dirname, './dynamic_views'))
+
 // Setup function
 const setup = async () => {
   await lti.deploy({ port: process.env.PORT || 3000 })
+<<<<<<< HEAD
 
   // Register platform
   await lti.registerPlatform({
@@ -47,6 +52,16 @@ const setup = async () => {
     authenticationEndpoint: 'https://digitomy.instructure.com/api/lti/authorize_redirect',
     accesstokenEndpoint: 'https://digitomy.instructure.com/login/oauth2/token',
     authConfig: { method: 'JWK_SET', key: 'https://digitomy.instructure.com/api/lti/security/jwks' }
+=======
+// Register Platform
+  await lti.registerPlatform({
+    url: 'https://canvas.instructure.com', 
+    name: 'Canvas Instructure',
+    clientId: '130000000000931',
+    authenticationEndpoint: 'https://canvas.instructure.com/api/lti/authorize_redirect',
+    accesstokenEndpoint: 'https://canvas.instructure.com/login/oauth2/token',
+    authConfig: { method: 'JWK_SET', key: 'https://canvas.instructure.com/api/lti/security/jwks' }
+>>>>>>> master
   })
 }
 

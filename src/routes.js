@@ -1,6 +1,4 @@
 const router = require('express').Router()
-const path = require('path')
-const axios = require('axios')
 
 // Requiring Ltijs
 const lti = require('ltijs').Provider
@@ -11,10 +9,6 @@ router.post('/grade', async (req, res) => {
     const idtoken = res.locals.token // IdToken
     const score = req.body.score // User numeric score sent in the body
     const token = req.body.token
-    const total = 100
-    console.log(req.body.score)
-    console.log(req.body.label)
-    console.log(token)
 
     // Creating Grade object
     const gradeObj = {
@@ -22,7 +16,7 @@ router.post('/grade', async (req, res) => {
       activityProgress: 'Completed',
       timestamp: `${new Date()}`,
       gradingProgress: 'FullyGraded',
-      scoreGiven: score / total,
+      scoreGiven: score / 100,
       scoreMaximum: 1,
     }
     // Selecting linetItem ID
@@ -37,7 +31,7 @@ router.post('/grade', async (req, res) => {
         // Creating line item if there is none
         console.log('Creating new line item')
         const newLineItem = {
-          scoreMaximum: 20,
+          scoreMaximum: 100,
           label: req.body.label,
           tag: 'grade',
           resourceLinkId: idtoken.platformContext.resource.id,
@@ -46,7 +40,6 @@ router.post('/grade', async (req, res) => {
         lineItemId = lineItem.id
       } else lineItemId = lineItems[0].id
     }
-
     console.log('\nline item id: ', lineItemId, '\ngrade object: ', gradeObj)
     console.log(idtoken.platformContext.endpoint.scope)
     // Sending Grade
