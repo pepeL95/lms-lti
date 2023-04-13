@@ -9,7 +9,8 @@ router.post('/grade', async (req, res) => {
     const idtoken = res.locals.token // IdToken
     const score = req.body.score // User numeric score sent in the body
     const token = req.body.token
-
+    console.log('*************** GRADES API DEBUG LOGS STARTS HERE ***************')
+    console.log('ltiKey: ' + token)
     // Creating Grade object
     const gradeObj = {
       userId: idtoken.user,
@@ -27,16 +28,20 @@ router.post('/grade', async (req, res) => {
         resourceLinkId: true,
       })
       const lineItems = response.lineItems
+      console.log('###########################################')
+      console.log('line items: ' + lineItems)
       if (lineItems.length === 0) {
         // Creating line item if there is none
         console.log('Creating new line item')
         const newLineItem = {
-          scoreMaximum: 20,
+          scoreMaximum: 1,
           label: req.body.label,
           tag: 'grade',
           resourceLinkId: idtoken.platformContext.resource.id,
         }
         const lineItem = await lti.Grade.createLineItem(idtoken, newLineItem)
+        console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        console.log('line items: ' + lineItems)
         lineItemId = lineItem.id
       } else lineItemId = lineItems[0].id
     }
