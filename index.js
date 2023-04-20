@@ -46,9 +46,9 @@ const setup = async () => {
     url: 'https://canvas.instructure.com', 
     name: 'Canvas Instructure',
     clientId: '130000000000931',
-    authenticationEndpoint: 'https://usflearn.canvas.instructure.com/api/lti/authorize_redirect',
-    accesstokenEndpoint: 'https://usflearn.canvas.instructure.com/login/oauth2/token',
-    authConfig: { method: 'JWK_SET', key: 'https://usflearn.canvas.instructure.com/api/lti/security/jwks' }
+    authenticationEndpoint: 'https://usflearn.instructure.com/api/lti/authorize_redirect',
+    accesstokenEndpoint: 'https://usflearn.instructure.com/login/oauth2/token',
+    authConfig: { method: 'JWK_SET', key: 'https://usflearn.instructure.com/api/lti/security/jwks' }
   })
 }
 
