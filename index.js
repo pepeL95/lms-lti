@@ -1,5 +1,7 @@
 require('dotenv').config()
+
 const path = require('path')
+
 const routes = require('./src/routes')
 
 const lti = require('ltijs').Provider
@@ -40,6 +42,7 @@ lti.app.set('views', path.join(__dirname, './dynamic_views'))
 
 // Setup function
 const setup = async () => {
+  
   await lti.deploy({ port: process.env.PORT || 3000 })
 // Register Platform
   await lti.registerPlatform({
